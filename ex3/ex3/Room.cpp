@@ -24,25 +24,21 @@ int Room::getTunnel3() const
 
 std::string Room::roomHazard() const
 {
-	
-	switch(_hazard->getHazardType())
-	{
-	case Hazard::Empty:
+	if (!_hazard)
 		return "";
-	case Hazard::MushMush:
+	if(typeid(*_hazard).name() == "MushMush")
 		return "MushMush is near";
-	case Hazard::Pit:
+	if (typeid(*_hazard).name() == "Pit")
 		return "Pit is near";
-	case Hazard::Bat:
+	if (typeid(*_hazard).name() == "Bat")
 		return "Bat is near";
-	}
 }
 
 bool Room::roomIsEmpty() const
 {
-	if (_hazard->getHazardType() == Hazard::Empty)
-		return true;
-	return false;
+	if (_hazard)
+		return false;
+	return true;
 }
 
 const Hazard* Room::getHazard() const
@@ -56,18 +52,17 @@ bool Room::attackInRoom(std::string& message) const
 		message = "You just shot yourself";
 	else 
 	{
-		switch (_hazard->getHazardType())
+		if (!_hazard)
 		{
-		case Hazard::Empty:
 			message = "";
 			return false;
-		case Hazard::MushMush:
-			message = "You got MushMush";
-		case Hazard::Pit:
-			message = "Pit is whistling";
-		case Hazard::Bat:
-			message = "Bat is laughing";
 		}
+		if (typeid(*_hazard).name() == "MushMush")
+			message = "You got MushMush";
+		if (typeid(*_hazard).name() == "Pit")
+			message = "Pit is whistling";
+		if (typeid(*_hazard).name() == "Bat")
+			message = "Bat is laughing";
 	}
 	return true;
 }
@@ -75,24 +70,22 @@ bool Room::attackInRoom(std::string& message) const
 
 bool Room::isMushMushHere() const
 {
-	if (_hazard->getHazardType() == Hazard::MushMush)
+	if (typeid(*_hazard).name() == "MushMush")
 		return true;
 	return false;
 }
 bool Room::clashInRoom(std::string& msg) const
 {
-
-	switch (_hazard->getHazardType())
+	if (!_hazard)
 	{
-	case Hazard::Empty:
 		msg = "";
 		return true;
-	case Hazard::MushMush:
-		msg = "MushMush got you";
-	case Hazard::Pit:
-		msg = "You fell into a Pit";
-	case Hazard::Bat:
-		msg = "A Bat will move you";
 	}
+	if (typeid(*_hazard).name() == "MushMush")
+		msg = "MushMush got you";
+	if (typeid(*_hazard).name() == "Pit")
+		msg = "You fell into a Pit";
+	if (typeid(*_hazard).name() == "Bat")
+		msg = "A Bat will move you";
 	return false;
 }

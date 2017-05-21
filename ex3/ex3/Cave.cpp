@@ -1,6 +1,9 @@
 #include "Cave.h"
 #include "SealedRoom.h"
 #include "RegularRoom.h"
+#include "MushMush.h"
+#include "Pit.h"
+#include "Bat.h"
 
 // constructor
 Cave::Cave(const int* const sealedRooms, int size)
@@ -18,6 +21,7 @@ Cave::Cave(const int* const sealedRooms, int size)
 			_rooms[i] = new SealedRoom(tunnels.at(i).at(0), tunnels.at(i).at(1), tunnels.at(i).at(2));
 		else
 			_rooms[i] = new RegularRoom(tunnels.at(i).at(0), tunnels.at(i).at(1), tunnels.at(i).at(2));
+		_rooms[i]->_hazard = nullptr;
 	}
 }
 
@@ -26,6 +30,8 @@ Cave::~Cave()
 {
 	for (auto i = 0; i < 20; i++)
 	{
+		if (_rooms[i]->_hazard)
+			delete _rooms[i]->_hazard;
 		delete _rooms[i];
 	}
 }
@@ -45,11 +51,11 @@ void Cave::plotHazard(int idx, const std::string& eventName)
 		throw "Invalid Index Exception";
 	}
 	if (eventName == "MushMush")
-		_rooms[idx]->_hazard->setHazardType(Hazard::MushMush);
+		_rooms[idx]->_hazard = new MushMush;
 	else if (eventName == "Pit")
-		_rooms[idx]->_hazard->setHazardType(Hazard::Pit);
+		_rooms[idx]->_hazard = new Pit;
 	else if (eventName == "Bat")
-		_rooms[idx]->_hazard->setHazardType(Hazard::Bat);
+		_rooms[idx]->_hazard = new Bat;
 	else
 		throw "Invalid Hazard Exception";
 }
