@@ -72,15 +72,19 @@ int main()
 
 	int selaed[5] = { 13,17,1,9,5 };
 	Cave cave(selaed, 5);
+	auto bla = cave.getRoomAtIndex(13);
 	cave.plotPlayerIdx(15);
 	cave.plotHazard(2, "MushMush");
 	cave.findMushMush();
 	cave.plotHazard(11, "Pit");
-	cave.plotHazard(19, "Bat");
-	cout << cave.playerAttack(4) << endl;
+	cave.plotHazard(18, "Pit");
+	cave.plotHazard(4, "Bat");
+	cout << cave.playerAttack(19) << endl;
+	cave.findMushMush();
 	cave.movePlayer(4);
 	cout << cave.playerClash(2) << endl;
+	cout << cave.playerAttack(0) << endl;
 	cave.gameOver();
-
+	cerr << "bla";
     return 0;
 }

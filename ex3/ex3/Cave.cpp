@@ -7,14 +7,14 @@
 #include <typeinfo>
 
 // constructor
-Cave::Cave(const int* const sealedRooms, int size)
+Cave::Cave(const int* const sealedRooms, int size): _playerIndex(-1)
 {
 	// init rooms and tunnels 0-19 (serial)
 	for (auto i = 0; i < 20; i++)
 	{
 		auto sealed = false;
 		for (auto j = 0; j < size; j++)
-			if(sealedRooms[j] == i)
+			if (sealedRooms[j] == i)
 			{
 				sealed = true;
 			}
@@ -70,7 +70,7 @@ int Cave::findMushMush(void) const
 	for (auto i = 0; i < 20; i++)
 	{
 		if (_rooms[i]->_hazard)
-			if (typeid(*_rooms[i]->_hazard).name() == typeid(MushMush).name())
+			if (_rooms[i]->isMushMushHere())
 				return i;
 	}
 	throw "MushMush Not Found Exception";
@@ -106,16 +106,19 @@ std::string Cave::playerAttack(int idx)
 			if (_rooms[_rooms[idxMushMush]->getTunnel1()]->roomIsEmpty())
 			{
 				delete _rooms[idxMushMush]->_hazard;
+				_rooms[idxMushMush]->_hazard = nullptr;
 				plotHazard(_rooms[idxMushMush]->getTunnel1(), "MushMush");
 			}
 			else if (_rooms[_rooms[idxMushMush]->getTunnel2()]->roomIsEmpty())
 			{
 				delete _rooms[idxMushMush]->_hazard;
+				_rooms[idxMushMush]->_hazard = nullptr;
 				plotHazard(_rooms[idxMushMush]->getTunnel2(), "MushMush");
 			}
 			else if (_rooms[_rooms[idxMushMush]->getTunnel3()]->roomIsEmpty())
 			{
-				delete _rooms[idxMushMush]->_hazard;
+				delete _rooms[_rooms[idxMushMush]->getTunnel3()]->_hazard;
+				_rooms[idxMushMush]->_hazard = nullptr;
 				plotHazard(_rooms[idxMushMush]->getTunnel3(), "MushMush");
 			}
 		}
@@ -128,15 +131,19 @@ std::string Cave::playerClash(int idx)
 {
 	if (idx < 0 || idx >19)
 		throw "Invalid Index Exception";
-	string clashMsg;
-	_rooms[_playerIndex]->clashInRoom(clashMsg);
-	if (clashMsg == "A Bat will move you")
+	string clashMsg1st;
+	string clashMsg2nd;
+	_rooms[_playerIndex]->clashInRoom(clashMsg1st);
+	if (clashMsg1st == "A Bat will move you")
 	{
 		delete _rooms[_playerIndex]->_hazard;
+		_rooms[_playerIndex]->_hazard = nullptr;
 		movePlayer(idx);
-		return playerClash(idx);
+		if (_rooms[_playerIndex]->clashInRoom(clashMsg2nd))
+			return clashMsg1st;
+		return clashMsg2nd;
 	}
-	return clashMsg;
+	return clashMsg1st;
 }
 bool Cave::gameOver() const
 {

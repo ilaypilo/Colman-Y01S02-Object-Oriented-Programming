@@ -37,11 +37,12 @@ std::string Room::roomHazard() const
 		return "Pit is near";
 	if (typeid(*_hazard).name() == typeid(Bat).name())
 		return "Bat is near";
+	return {};
 }
 
 bool Room::roomIsEmpty() const
 {
-	if (_hazard)
+	if (_hazard || typeid(*this).name() == typeid(SealedRoom).name())
 		return false;
 	return true;
 }
