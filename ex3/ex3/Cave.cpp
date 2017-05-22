@@ -46,9 +46,6 @@ const Room* Cave::getRoomAtIndex(int index) const
 }
 void Cave::plotHazard(int idx, const std::string& eventName)
 {
-	//MushMush
-	//Pit
-	//Bat
 	if(idx > 19 || idx < 0 || !_rooms[idx]->roomIsEmpty())
 	{
 		throw "Invalid Index Exception";
@@ -64,7 +61,7 @@ void Cave::plotHazard(int idx, const std::string& eventName)
 }
 void Cave::plotPlayerIdx(int idx)
 {
-	if (idx < 0 || idx >19|| !_rooms[idx]->roomIsEmpty())
+	if (idx < 0 || idx >19|| !_rooms[idx]->roomIsEmpty() || typeid(*_rooms[idx]).name() == typeid(SealedRoom).name())
 		throw "Invalid Index Exception";
 	_playerIndex = idx;
 }
@@ -72,10 +69,11 @@ int Cave::findMushMush(void) const
 {
 	for (auto i = 0; i < 20; i++)
 	{
-		if (typeid(_rooms[i]->_hazard).name() == typeid(MushMush).name())
-			return i;
-		throw "MushMush Not Found Exception";
+		if (_rooms[i]->_hazard)
+			if (typeid(*_rooms[i]->_hazard).name() == typeid(MushMush).name())
+				return i;
 	}
+	throw "MushMush Not Found Exception";
 }
 void Cave::movePlayer(int idx)
 {
@@ -107,17 +105,17 @@ std::string Cave::playerAttack(int idx)
 			auto idxMushMush = findMushMush();
 			if (_rooms[_rooms[idxMushMush]->getTunnel1()]->roomIsEmpty())
 			{
-				delete _rooms[_rooms[idxMushMush]->getTunnel1()]->_hazard;
+				delete _rooms[idxMushMush]->_hazard;
 				plotHazard(_rooms[idxMushMush]->getTunnel1(), "MushMush");
 			}
 			else if (_rooms[_rooms[idxMushMush]->getTunnel2()]->roomIsEmpty())
 			{
-				delete _rooms[_rooms[idxMushMush]->getTunnel2()]->_hazard;
+				delete _rooms[idxMushMush]->_hazard;
 				plotHazard(_rooms[idxMushMush]->getTunnel2(), "MushMush");
 			}
 			else if (_rooms[_rooms[idxMushMush]->getTunnel3()]->roomIsEmpty())
 			{
-				delete _rooms[_rooms[idxMushMush]->getTunnel3()]->_hazard;
+				delete _rooms[idxMushMush]->_hazard;
 				plotHazard(_rooms[idxMushMush]->getTunnel3(), "MushMush");
 			}
 		}
@@ -138,8 +136,7 @@ std::string Cave::playerClash(int idx)
 		movePlayer(idx);
 		return playerClash(idx);
 	}
-	else
-		return clashMsg;
+	return clashMsg;
 }
 bool Cave::gameOver() const
 {

@@ -53,7 +53,7 @@ const Hazard* Room::getHazard() const
 
 bool Room::attackInRoom(std::string& message) const
 {
-	if (typeid(this).name() == typeid(SealedRoom).name())
+	if (typeid(*this).name() == typeid(SealedRoom).name())
 		message = "You just shot yourself";
 	else 
 	{
