@@ -6,4 +6,5 @@ class RegularRoom : public Room
 {
 public:
 	RegularRoom(int tunnel1, int tunnel2, int tunnel3) : Room(tunnel1, tunnel2, tunnel3) {}
+	virtual void type() {};
 };

@@ -8,4 +8,5 @@ class Hazard
 public:
 	Hazard(){}
 	~Hazard(){};
+	virtual void type() {};
 };

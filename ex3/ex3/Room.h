@@ -10,6 +10,7 @@ class Hazard;
 class Room
 {
 public:
+	virtual void type() {};
 	Room(int tunnel1, int tunnel2, int tunnel3);
 	~Room(){};
 	bool attackInRoom(std::string& message) const;

@@ -1,5 +1,10 @@
 
 #include "Room.h"
+#include "MushMush.h"
+#include "Pit.h"
+#include "Bat.h"
+#include "SealedRoom.h"
+#include <typeinfo>
 
 Room::Room(int tunnel1, int tunnel2, int tunnel3)
 {
@@ -26,11 +31,11 @@ std::string Room::roomHazard() const
 {
 	if (!_hazard)
 		return "";
-	if(typeid(*_hazard).name() == "MushMush")
+	if(typeid(*_hazard).name() == typeid(MushMush).name())
 		return "MushMush is near";
-	if (typeid(*_hazard).name() == "Pit")
+	if (typeid(*_hazard).name() == typeid(Pit).name())
 		return "Pit is near";
-	if (typeid(*_hazard).name() == "Bat")
+	if (typeid(*_hazard).name() == typeid(Bat).name())
 		return "Bat is near";
 }
 
@@ -48,7 +53,7 @@ const Hazard* Room::getHazard() const
 
 bool Room::attackInRoom(std::string& message) const
 {
-	if (typeid(this).name() == "SealedRoom")
+	if (typeid(this).name() == typeid(SealedRoom).name())
 		message = "You just shot yourself";
 	else 
 	{
@@ -57,11 +62,11 @@ bool Room::attackInRoom(std::string& message) const
 			message = "";
 			return false;
 		}
-		if (typeid(*_hazard).name() == "MushMush")
+		if (typeid(*_hazard).name() == typeid(MushMush).name())
 			message = "You got MushMush";
-		if (typeid(*_hazard).name() == "Pit")
+		if (typeid(*_hazard).name() == typeid(Pit).name())
 			message = "Pit is whistling";
-		if (typeid(*_hazard).name() == "Bat")
+		if (typeid(*_hazard).name() == typeid(Bat).name())
 			message = "Bat is laughing";
 	}
 	return true;
@@ -70,10 +75,11 @@ bool Room::attackInRoom(std::string& message) const
 
 bool Room::isMushMushHere() const
 {
-	if (typeid(*_hazard).name() == "MushMush")
+	if (typeid(*_hazard).name() == typeid(MushMush).name())
 		return true;
 	return false;
 }
+
 bool Room::clashInRoom(std::string& msg) const
 {
 	if (!_hazard)
@@ -81,11 +87,11 @@ bool Room::clashInRoom(std::string& msg) const
 		msg = "";
 		return true;
 	}
-	if (typeid(*_hazard).name() == "MushMush")
+	if (typeid(*_hazard).name() == typeid(MushMush).name())
 		msg = "MushMush got you";
-	if (typeid(*_hazard).name() == "Pit")
+	if (typeid(*_hazard).name() == typeid(Pit).name())
 		msg = "You fell into a Pit";
-	if (typeid(*_hazard).name() == "Bat")
+	if (typeid(*_hazard).name() == typeid(Bat).name())
 		msg = "A Bat will move you";
 	return false;
 }

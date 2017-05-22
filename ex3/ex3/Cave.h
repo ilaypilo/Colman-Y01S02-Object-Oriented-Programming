@@ -9,6 +9,8 @@ using namespace std;
 class Room;
 class Cave
 {
+	bool _gameOver = false;
+	int _playerIndex;
 	Room* _rooms[20];
 	// tunnels
 	vector<vector<int>> tunnels = { { 2, 18, 19 },
