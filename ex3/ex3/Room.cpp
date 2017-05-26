@@ -59,13 +59,17 @@ const Hazard* Room::getHazard() const
 
 void Room::deleteHazard()
 {
-	delete _hazard;
-	_hazard = nullptr;
+	if(_hazard)
+	{
+		delete _hazard;
+		_hazard = nullptr;
+	}
 }
 
 void Room::setHazard(Hazard *ptr)
 {
-	_hazard = ptr;
+	if(ptr && _hazard==nullptr)
+		_hazard = ptr;
 }
 
 bool Room::attackInRoom(std::string& message) const
@@ -81,9 +85,9 @@ bool Room::attackInRoom(std::string& message) const
 		}
 		if (typeid(*_hazard).name() == typeid(MushMush).name())
 			message = "You got MushMush";
-		if (typeid(*_hazard).name() == typeid(Pit).name())
+		else if (typeid(*_hazard).name() == typeid(Pit).name())
 			message = "Pit is whistling";
-		if (typeid(*_hazard).name() == typeid(Bat).name())
+		else if (typeid(*_hazard).name() == typeid(Bat).name())
 			message = "Bat is laughing";
 	}
 	return true;

@@ -51,9 +51,9 @@ void Cave::plotHazard(int idx, const std::string& eventName) const
 	if (eventName == "MushMush")
 		_rooms[idx]->setHazard(new MushMush);
 	else if (eventName == "Pit")
-		_rooms[idx]->setHazard(new MushMush);
+		_rooms[idx]->setHazard(new Pit);
 	else if (eventName == "Bat")
-		_rooms[idx]->setHazard(new MushMush);
+		auto i = 1;
 	else
 		throw "Invalid Hazard Exception";
 }
