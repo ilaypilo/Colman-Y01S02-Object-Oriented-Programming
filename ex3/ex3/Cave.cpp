@@ -125,18 +125,20 @@ std::string Cave::playerClash(int idx)
 {
 	if (idx < 0 || idx >19)
 		throw "Invalid Index Exception";
-	string clashMsg1st;
+	string clashMsg;
 	string clashMsg2nd;
-	_rooms[_playerIndex]->clashInRoom(clashMsg1st);
-	if (clashMsg1st == "A Bat will move you")
+	_rooms[_playerIndex]->clashInRoom(clashMsg);
+	if (clashMsg == "A Bat will move you")
 	{
 		_rooms[_playerIndex]->deleteHazard();
 		moveBat(idx);
-		if (_rooms[_playerIndex]->clashInRoom(clashMsg2nd))
-			return clashMsg1st;
-		return clashMsg2nd;
+		if (_rooms[_playerIndex]->getHazard() == nullptr)
+			return clashMsg;
+		_rooms[_playerIndex]->clashInRoom(clashMsg);
+		if (clashMsg == "A Bat will move you")
+			_rooms[_playerIndex]->deleteHazard();
 	}
-	return clashMsg1st;
+	return clashMsg;
 }
 bool Cave::gameOver() const
 {
