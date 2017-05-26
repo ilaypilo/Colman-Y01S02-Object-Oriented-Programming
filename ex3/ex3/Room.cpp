@@ -6,11 +6,16 @@
 #include "SealedRoom.h"
 #include <typeinfo>
 
-Room::Room(int tunnel1, int tunnel2, int tunnel3)
+Room::Room(int tunnel1, int tunnel2, int tunnel3): _hazard(nullptr)
 {
 	_tunnels[0] = tunnel1;
 	_tunnels[1] = tunnel2;
 	_tunnels[2] = tunnel3;
+}
+
+Room::~Room()
+{
+	delete _hazard;
 }
 
 
@@ -42,7 +47,7 @@ std::string Room::roomHazard() const
 
 bool Room::roomIsEmpty() const
 {
-	if (_hazard || typeid(*this).name() == typeid(SealedRoom).name())
+	if (_hazard)
 		return false;
 	return true;
 }
@@ -50,6 +55,17 @@ bool Room::roomIsEmpty() const
 const Hazard* Room::getHazard() const
 {
 	return _hazard;
+}
+
+void Room::deleteHazard()
+{
+	delete _hazard;
+	_hazard = nullptr;
+}
+
+void Room::setHazard(Hazard *ptr)
+{
+	_hazard = ptr;
 }
 
 bool Room::attackInRoom(std::string& message) const

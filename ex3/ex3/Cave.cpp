@@ -22,7 +22,6 @@ Cave::Cave(const int* const sealedRooms, int size): _playerIndex(-1)
 			_rooms[i] = new SealedRoom(tunnels.at(i).at(0), tunnels.at(i).at(1), tunnels.at(i).at(2));
 		else
 			_rooms[i] = new RegularRoom(tunnels.at(i).at(0), tunnels.at(i).at(1), tunnels.at(i).at(2));
-		_rooms[i]->_hazard = nullptr;
 	}
 }
 
@@ -31,8 +30,6 @@ Cave::~Cave()
 {
 	for (auto i = 0; i < 20; i++)
 	{
-		if (_rooms[i]->_hazard)
-			delete _rooms[i]->_hazard;
 		delete _rooms[i];
 	}
 }
@@ -44,24 +41,25 @@ const Room* Cave::getRoomAtIndex(int index) const
 		throw "Invalid Index Exception";
 	return _rooms[index];
 }
-void Cave::plotHazard(int idx, const std::string& eventName)
+void Cave::plotHazard(int idx, const std::string& eventName) const
 {
 	if(idx > 19 || idx < 0 || !_rooms[idx]->roomIsEmpty())
 	{
 		throw "Invalid Index Exception";
 	}
+	
 	if (eventName == "MushMush")
-		_rooms[idx]->_hazard = new MushMush;
+		_rooms[idx]->setHazard(new MushMush);
 	else if (eventName == "Pit")
-		_rooms[idx]->_hazard = new Pit;
+		_rooms[idx]->setHazard(new MushMush);
 	else if (eventName == "Bat")
-		_rooms[idx]->_hazard = new Bat;
+		_rooms[idx]->setHazard(new MushMush);
 	else
 		throw "Invalid Hazard Exception";
 }
 void Cave::plotPlayerIdx(int idx)
 {
-	if (idx < 0 || idx >19|| !_rooms[idx]->roomIsEmpty() || typeid(*_rooms[idx]).name() == typeid(SealedRoom).name())
+	if (idx < 0 || idx >19|| !_rooms[idx]->roomIsEmpty())
 		throw "Invalid Index Exception";
 	_playerIndex = idx;
 }
@@ -69,7 +67,7 @@ int Cave::findMushMush(void) const
 {
 	for (auto i = 0; i < 20; i++)
 	{
-		if (_rooms[i]->_hazard)
+		if (_rooms[i]->getHazard())
 			if (_rooms[i]->isMushMushHere())
 				return i;
 	}
@@ -89,43 +87,33 @@ void Cave::movePlayer(int idx)
 std::string Cave::playerAttack(int idx)
 {
 	auto attackFlag = false;
-	if (_rooms[_playerIndex]->getTunnel1() == idx)
-		attackFlag = true;
-	else if (_rooms[_playerIndex]->getTunnel2() == idx)
-		attackFlag = true;
-	else if (_rooms[_playerIndex]->getTunnel3() == idx)
-		attackFlag = true;
-	else
+	if (_rooms[_playerIndex]->getTunnel1() != idx && _rooms[_playerIndex]->getTunnel2() != idx && _rooms[_playerIndex]->getTunnel3() != idx)
 		throw "Invalid Index Exception";
-	if(attackFlag)
+	string attackMsg;
+
+	if (!_rooms[idx]->attackInRoom(attackMsg))
 	{
-		string attackMsg;
-		if (!_rooms[idx]->attackInRoom(attackMsg))
+		auto idxMushMush = findMushMush();
+		if (_rooms[_rooms[idxMushMush]->getTunnel1()]->roomIsEmpty())
 		{
-			auto idxMushMush = findMushMush();
-			if (_rooms[_rooms[idxMushMush]->getTunnel1()]->roomIsEmpty())
-			{
-				delete _rooms[idxMushMush]->_hazard;
-				_rooms[idxMushMush]->_hazard = nullptr;
-				plotHazard(_rooms[idxMushMush]->getTunnel1(), "MushMush");
-			}
-			else if (_rooms[_rooms[idxMushMush]->getTunnel2()]->roomIsEmpty())
-			{
-				delete _rooms[idxMushMush]->_hazard;
-				_rooms[idxMushMush]->_hazard = nullptr;
-				plotHazard(_rooms[idxMushMush]->getTunnel2(), "MushMush");
-			}
-			else if (_rooms[_rooms[idxMushMush]->getTunnel3()]->roomIsEmpty())
-			{
-				delete _rooms[_rooms[idxMushMush]->getTunnel3()]->_hazard;
-				_rooms[idxMushMush]->_hazard = nullptr;
-				plotHazard(_rooms[idxMushMush]->getTunnel3(), "MushMush");
-			}
+			_rooms[idxMushMush]->deleteHazard();
+			plotHazard(_rooms[idxMushMush]->getTunnel1(), "MushMush");
 		}
-		else if (attackMsg == "You got MushMush")
-			_gameOver = true;
-		return attackMsg;
+		else if (_rooms[_rooms[idxMushMush]->getTunnel2()]->roomIsEmpty())
+		{
+			_rooms[idxMushMush]->deleteHazard();
+			plotHazard(_rooms[idxMushMush]->getTunnel2(), "MushMush");
+		}
+		else if (_rooms[_rooms[idxMushMush]->getTunnel3()]->roomIsEmpty())
+		{
+			_rooms[idxMushMush]->deleteHazard();
+			plotHazard(_rooms[idxMushMush]->getTunnel3(), "MushMush");
+		}
 	}
+	else if (attackMsg == "You got MushMush" || attackMsg == "You just shot yourself")
+		_gameOver = true;
+
+	return attackMsg;
 }
 std::string Cave::playerClash(int idx)
 {
@@ -136,8 +124,7 @@ std::string Cave::playerClash(int idx)
 	_rooms[_playerIndex]->clashInRoom(clashMsg1st);
 	if (clashMsg1st == "A Bat will move you")
 	{
-		delete _rooms[_playerIndex]->_hazard;
-		_rooms[_playerIndex]->_hazard = nullptr;
+		_rooms[_playerIndex]->deleteHazard();
 		movePlayer(idx);
 		if (_rooms[_playerIndex]->clashInRoom(clashMsg2nd))
 			return clashMsg1st;

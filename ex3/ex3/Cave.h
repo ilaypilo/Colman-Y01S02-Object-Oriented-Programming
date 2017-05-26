@@ -9,6 +9,7 @@ using namespace std;
 class Room;
 class Cave
 {
+	
 	bool _gameOver = false;
 	int _playerIndex;
 	Room* _rooms[20];
@@ -37,7 +38,7 @@ public:
     Cave(const int* const sealedRooms, int size);
     ~Cave();
     const Room* getRoomAtIndex(int index) const;
-    void plotHazard(int idx, const std::string& eventName);
+    void plotHazard(int idx, const std::string& eventName) const;
 	void plotPlayerIdx(int idx);
     int findMushMush(void) const;
 	void movePlayer(int idx);

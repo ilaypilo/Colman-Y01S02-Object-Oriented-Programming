@@ -64,11 +64,11 @@ static bool test(void)
 }
 int main()
 {
-    //if (!test())
-    //    std::cout<<"Error: Game Logic Error\n";
-    //Room* r = new SealedRoom(1,2,3);
-    //delete r;
-    //std::cout<<"done\n";
+    if (!test())
+        std::cout<<"Error: Game Logic Error\n";
+    Room* r = new SealedRoom(1,2,3);
+    delete r;
+    std::cout<<"done\n";
 
 	int selaed[5] = { 13,17,1,9,5 };
 	Cave cave(selaed, 5);
@@ -85,6 +85,6 @@ int main()
 	cout << cave.playerClash(2) << endl;
 	cout << cave.playerAttack(0) << endl;
 	cave.gameOver();
-	cerr << "bla";
+
     return 0;
 }
