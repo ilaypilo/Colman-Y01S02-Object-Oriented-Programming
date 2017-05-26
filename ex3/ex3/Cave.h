@@ -42,6 +42,7 @@ public:
 	void plotPlayerIdx(int idx);
     int findMushMush(void) const;
 	void movePlayer(int idx);
+	void moveBat(int idx);
     std::string playerAttack(int idx);
     std::string playerClash(int idx);
 	bool gameOver() const;

@@ -53,7 +53,7 @@ void Cave::plotHazard(int idx, const std::string& eventName) const
 	else if (eventName == "Pit")
 		_rooms[idx]->setHazard(new Pit);
 	else if (eventName == "Bat")
-		auto i = 1;
+		_rooms[idx]->setHazard(new Bat);
 	else
 		throw "Invalid Hazard Exception";
 }
@@ -83,6 +83,12 @@ void Cave::movePlayer(int idx)
 		_playerIndex = idx;
 	else
 		throw "Invalid Index Exception";
+}
+void Cave::moveBat(int idx)
+{
+	if (idx < 0 || idx >19)
+		throw "Invalid Index Exception";
+	_playerIndex = idx;
 }
 std::string Cave::playerAttack(int idx)
 {
@@ -125,7 +131,7 @@ std::string Cave::playerClash(int idx)
 	if (clashMsg1st == "A Bat will move you")
 	{
 		_rooms[_playerIndex]->deleteHazard();
-		movePlayer(idx);
+		moveBat(idx);
 		if (_rooms[_playerIndex]->clashInRoom(clashMsg2nd))
 			return clashMsg1st;
 		return clashMsg2nd;
