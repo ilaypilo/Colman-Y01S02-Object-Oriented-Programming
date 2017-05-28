@@ -126,6 +126,7 @@ std::string Cave::playerClash(int idx)
 	if (idx < 0 || idx >19)
 		throw "Invalid Index Exception";
 	string clashMsg;
+
 	_rooms[_playerIndex]->clashInRoom(clashMsg);
 	if (clashMsg == "A Bat will move you")
 	{
