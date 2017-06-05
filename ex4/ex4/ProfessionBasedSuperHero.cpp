@@ -72,7 +72,10 @@ void ProfessionBasedSuperHero::setProfession(const char* profession)
 
 void ProfessionBasedSuperHero::setYearsExperience(int yearsExperience)
 {
-	_yearsExperience = yearsExperience;
+	if (yearsExperience >= 0)
+	{
+		_yearsExperience = yearsExperience;
+	}
 }
 //=================================================================================//
 // get functions

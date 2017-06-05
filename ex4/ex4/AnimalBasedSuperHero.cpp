@@ -21,6 +21,8 @@ AnimalBasedSuperHero::AnimalBasedSuperHero(	const AnimalBasedSuperHero& animalBa
 {
 	setAnimal(animalBasedSuperHero.getAnimal());
 }
+
+// destructor
 AnimalBasedSuperHero::~AnimalBasedSuperHero()
 {
 	if (!_animal)
@@ -36,7 +38,7 @@ void AnimalBasedSuperHero::setAnimal(const char* animal)
 	// check if name is valid
 	if (!animal)
 	{
-		// throw "[SuperHero::setName] invalid name!"
+		// throw "[AnimalBasedSuperHero::setName] invalid name!"
 		return;
 	}
 	// check if addresses are the same
