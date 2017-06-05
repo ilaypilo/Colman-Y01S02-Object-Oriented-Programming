@@ -2,6 +2,7 @@
 #include "ProfessionBasedSuperHero.h"
 #include "AnimalBasedSuperHero.h"
 #include "CaptainAmerica.h"
+#include "Spiderman.h"
 
 int main()
 {
@@ -17,6 +18,10 @@ int main()
 	auto capten_california = new CaptainAmerica("capten california", 39, true, "professor", 9, 40);
 	auto copy_of_capten_california(*capten_california);
 	delete capten_california;
+
+	auto black_spiderman = new Spiderman("black spiderman", 22, true, "spider", 5);
+	auto copy_of_black_spiderman(*black_spiderman);
+	delete black_spiderman;
 
 
 	return 0;
