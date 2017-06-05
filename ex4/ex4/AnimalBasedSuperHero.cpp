@@ -94,19 +94,7 @@ void AnimalBasedSuperHero::load(ifstream& in_file)
 void AnimalBasedSuperHero::save(ofstream& out_file) const
 {
 	// SuperHero
-	// get length of char *
-	int szName = strlen(getName());
-	// write class ID
-	out_file.write(CLASS_ID, CLASS_ID_SIZE);
-	// write _name size
-	out_file.write((char *)&szName, sizeof(szName));
-	// write the _name
-	out_file.write(_name, szName);
-	// write _age
-	out_file.write((char*)&_age, sizeof(_age));
-	// write _radioactive
-	out_file.write((char*)&_radioactive, sizeof(_radioactive));
-
+	SuperHero::save(out_file);
 	// AnimalBasedSuperHero
 	// get length of char *
 	int szAnimal = strlen(getAnimal());

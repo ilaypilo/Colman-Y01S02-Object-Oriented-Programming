@@ -78,30 +78,8 @@ void CaptainAmerica::load(ifstream& in_file)
 
 void CaptainAmerica::save(ofstream& out_file) const
 {
-	// SuperHero
-	// get length of char *
-	int szName = strlen(getName());
-	// write class ID
-	out_file.write(CLASS_ID, CLASS_ID_SIZE);
-	// write _name size
-	out_file.write((char *)&szName, sizeof(szName));
-	// write the _name
-	out_file.write(_name, szName);
-	// write _age
-	out_file.write((char*)&_age, sizeof(_age));
-	// write _radioactive
-	out_file.write((char*)&_radioactive, sizeof(_radioactive));
-
 	// ProfessionBasedSuperHero
-	// get length of char *
-	int szProfession = strlen(getProfession());
-	// write _profession size
-	out_file.write((char*)&szProfession, sizeof(szProfession));
-	// write _profession
-	out_file.write(_profession, szProfession);
-	// write _yearsExperience
-	out_file.write((char*)&_yearsExperience, sizeof(_yearsExperience));
-
+	ProfessionBasedSuperHero::save(out_file);
 	// CaptainAmerica
 	// write _ageIncludingFreezing
 	out_file.write((char*)&_ageIncludingFreezing, sizeof(_ageIncludingFreezing));

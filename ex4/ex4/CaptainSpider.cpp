@@ -50,9 +50,11 @@ CaptainSpider::~CaptainSpider()
 //=================================================================================//
 void CaptainSpider::load(ifstream& in_file)
 {
-	
+	Spiderman::load(in_file);
+	CaptainAmerica::load(in_file);
 }
 void CaptainSpider::save(ofstream& out_file) const
 {
-	
+	Spiderman::save(out_file);
+	CaptainAmerica::save(out_file);
 }

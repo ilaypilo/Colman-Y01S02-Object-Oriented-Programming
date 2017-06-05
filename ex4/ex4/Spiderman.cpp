@@ -74,27 +74,8 @@ void Spiderman::load(ifstream& in_file)
 
 void Spiderman::save(ofstream& out_file) const
 {
-	// SuperHero
-	// get length of char *
-	int szName = strlen(getName());
-	// write class ID
-	out_file.write(CLASS_ID, CLASS_ID_SIZE);
-	// write _name size
-	out_file.write((char *)&szName, sizeof(szName));
-	// write the _name
-	out_file.write(_name, szName);
-	// write _age
-	out_file.write((char*)&_age, sizeof(_age));
-	// write _radioactive
-	out_file.write((char*)&_radioactive, sizeof(_radioactive));
-
 	// AnimalBasedSuperHero
-	// get length of char *
-	int szAnimal = strlen(getAnimal());
-	// write _profession size
-	out_file.write((char*)&szAnimal, sizeof(szAnimal));
-	// write _profession
-	out_file.write(_animal, szAnimal);
+	AnimalBasedSuperHero::save(out_file);
 
 	//Spiderman
 	// write _webSize

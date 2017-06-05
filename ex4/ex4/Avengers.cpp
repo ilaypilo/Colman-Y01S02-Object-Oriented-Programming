@@ -11,6 +11,8 @@ Avengers::~Avengers()
 {
 	
 }
+
+
 #define CLASS_ID_SIZE 2
 #define SH "SH" //SuperHero
 #define AB "AB" //AnimalBasedSuperHero
@@ -23,17 +25,17 @@ Avengers::~Avengers()
 void Avengers::saveType(ofstream& out, const SuperHero* hero) const
 {
 	char *classId = nullptr;
-	if (typeid(hero).name() == typeid(SuperHero).name())
+	if (typeid(*hero).name() == typeid(SuperHero).name())
 		classId = SH;
-	else if (typeid(hero).name() == typeid(AnimalBasedSuperHero).name())
+	else if (typeid(*hero).name() == typeid(AnimalBasedSuperHero).name())
 		classId = AB;
-	else if (typeid(hero).name() == typeid(Spiderman).name())
+	else if (typeid(*hero).name() == typeid(Spiderman).name())
 		classId = SP;
-	else if (typeid(hero).name() == typeid(ProfessionBasedSuperHero).name())
+	else if (typeid(*hero).name() == typeid(ProfessionBasedSuperHero).name())
 		classId = PB;
-	else if (typeid(hero).name() == typeid(CaptainAmerica).name())
+	else if (typeid(*hero).name() == typeid(CaptainAmerica).name())
 		classId = CA;
-	else if (typeid(hero).name() == typeid(CaptainSpider).name())
+	else if (typeid(*hero).name() == typeid(CaptainSpider).name())
 		classId = CS;
 	out.write(classId, CLASS_ID_SIZE);
 }

@@ -82,5 +82,19 @@ int main()
 	f10.close();
 	delete black_spiderman;
 
+	//CaptainSpider
+	auto blue_captain_spider = new CaptainSpider("blue_captain_spider", 39, true, "professor", 9, 40, "unhuman", 6);
+	ofstream f11("CS.bin", ios::binary);
+	blue_captain_spider->save(f11);
+	f11.close();
+
+	CaptainSpider blue_captain_spider_from_file;
+	ifstream f12("CS.bin", ios::binary);
+	blue_captain_spider_from_file.load(f12);
+	f12.close();
+	delete blue_captain_spider;
+
+
+
 	return 0;
 }
