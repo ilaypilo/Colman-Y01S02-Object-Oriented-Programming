@@ -28,6 +28,14 @@ int main()
 	auto copy_of_red_captain_spider(*red_captain_spider);
 	delete red_captain_spider;
 
+	ofstream f1("SH.bin", ios::binary);
+	noob_batman.save(f1);
+	f1.close();
+
+	SuperHero noob_batman_from_file;
+	ifstream f2("SH.bin", ios::binary);
+	noob_batman_from_file.load(f2);
+	f2.close();
 
 	return 0;
 }

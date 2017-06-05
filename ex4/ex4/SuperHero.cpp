@@ -105,11 +105,52 @@ void SuperHero::setRadioactive(bool radioactive)
 // load and save functions
 //=================================================================================//
 
+// file type
+// [type]				2 chars		2 bytes
+// [size_of_name]		int			4 bytes
+// [name]				char *		size_of_name
+// [age]				dobule		8 bytes
+// [radioactive]		bool		1 byte
+
+
+#define CLASS_ID "SH"
+#define CLASS_ID_SIZE 2
+
 void SuperHero::load(ifstream& in_file)
 {
+	auto szName = 0;
+	auto classType = new char[CLASS_ID_SIZE+1]();
+	in_file.read(classType, CLASS_ID_SIZE);
+	// validate the file for the class
+	if (strstr(CLASS_ID, classType))
+	{
+		// read name size
+		in_file.read((char *)&szName, sizeof(szName));
+		// read the name to temp name
+		auto tempName = new char[szName+1]();
+		in_file.read(tempName, szName);
+		// set the name
+		setName(tempName);
+		delete tempName;
+		// read age
+		in_file.read((char*)&_age, sizeof(_age));
+		// read radioactive
+		in_file.read((char*)&_radioactive, sizeof(_radioactive));
+	}
 	
 }
 void SuperHero::save(ofstream& out_file) const
 {
-	
+	// get name length
+	int szName = strlen(getName());
+	// write class ID
+	out_file.write(CLASS_ID, CLASS_ID_SIZE);
+	// write name size
+	out_file.write((char *) &szName, sizeof(szName));
+	// write the name itself
+	out_file.write(_name, szName);
+	// write the age
+	out_file.write((char*) &_age, sizeof(_age));
+	// write the radioactive
+	out_file.write((char*) &_radioactive, sizeof(_radioactive));
 }
