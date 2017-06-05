@@ -1,6 +1,9 @@
 #include "SuperHero.h"
 
-// default constructor
+//=================================================================================//
+// constructors
+//=================================================================================//
+ // default constructor
 SuperHero::SuperHero(): _name(nullptr), _age(0), _radioactive(false)
 {
 }
@@ -62,6 +65,11 @@ void SuperHero::setName(const char* name)
 	if (!name)
 	{
 		// throw "[SuperHero::setName] invalid name!"
+		return;
+	}
+	// check if addresses are the same
+	if (name == _name)
+	{
 		return;
 	}
 	// remove the name if needed

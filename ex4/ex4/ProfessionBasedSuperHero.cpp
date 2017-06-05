@@ -1,6 +1,9 @@
 #include "ProfessionBasedSuperHero.h"
 
-// default constructor
+//=================================================================================//
+// constructors
+//=================================================================================//
+
 ProfessionBasedSuperHero::ProfessionBasedSuperHero() : _yearsExperience(0), _profession(nullptr)
 {
 	
@@ -23,9 +26,9 @@ ProfessionBasedSuperHero::ProfessionBasedSuperHero(const char* profession, int y
 }
 
 // copy constructor
-ProfessionBasedSuperHero::ProfessionBasedSuperHero(const ProfessionBasedSuperHero& professionBasedSuperHero) : SuperHero(professionBasedSuperHero)
+ProfessionBasedSuperHero::ProfessionBasedSuperHero(	const ProfessionBasedSuperHero& professionBasedSuperHero) 
+													: SuperHero(professionBasedSuperHero) // call SuperHero copy constructor
 {
-	//SuperHero::SuperHero(professionBasedSuperHero.getName(), professionBasedSuperHero.getAge(), professionBasedSuperHero.getRadioactive());
 	setProfession(professionBasedSuperHero.getProfession());
 	setYearsExperience(professionBasedSuperHero.getYearsExperience());
 }
@@ -33,8 +36,6 @@ ProfessionBasedSuperHero::ProfessionBasedSuperHero(const ProfessionBasedSuperHer
 // destructor 
 ProfessionBasedSuperHero::~ProfessionBasedSuperHero()
 {
-	// call SuperHero destructor
-	SuperHero::~SuperHero();
 	if (!_profession)
 	{
 		delete _profession;
@@ -51,6 +52,11 @@ void ProfessionBasedSuperHero::setProfession(const char* profession)
 	if (!profession)
 	{
 		// throw "[ProfessionBasedSuperHero::setName] invalid name!"
+		return;
+	}
+	// check if addresses are the same
+	if (profession == _profession) 
+	{
 		return;
 	}
 	// remove the name if needed
