@@ -146,6 +146,7 @@
     <ClCompile Include="Avengers.cpp" />
     <ClCompile Include="CaptainAmerica.cpp" />
     <ClCompile Include="CaptainSpider.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="ProfessionBasedSuperHero.cpp" />
     <ClCompile Include="Spiderman.cpp" />
     <ClCompile Include="SuperHero.cpp" />
