@@ -72,11 +72,6 @@ const char* AnimalBasedSuperHero::getAnimal() const
 // [szAnimal]			int			4 bytes
 // [Animal]				char *		szAnimal
 
-
-
-#define CLASS_ID "AB"
-#define CLASS_ID_SIZE 2
-
 void AnimalBasedSuperHero::load(ifstream& in_file)
 {
 	SuperHero::load(in_file);

@@ -64,10 +64,6 @@ void CaptainAmerica::setAgeIncludingFreezing(double ageIncludingFreezing)
 // ProfessionBasedSuperHero
 // [ageIncludingFreezing]		double		8 bytes
 
-
-#define CLASS_ID "CA"
-#define CLASS_ID_SIZE 2
-
 void CaptainAmerica::load(ifstream& in_file)
 {
 	ProfessionBasedSuperHero::load(in_file);

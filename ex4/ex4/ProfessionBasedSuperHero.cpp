@@ -97,9 +97,6 @@ int ProfessionBasedSuperHero::getYearsExperience() const
 // [Profession]				char *		szProfession
 // [yearsExperience]		int			4 bytes
 
-#define CLASS_ID "PB"
-#define CLASS_ID_SIZE 2
-
 void ProfessionBasedSuperHero::load(ifstream& in_file)
 {
 	SuperHero::load(in_file);

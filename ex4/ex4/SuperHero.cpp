@@ -117,6 +117,7 @@ static bool LoadBuildFlag = true;
 
 void SuperHero::load(ifstream& in_file)
 {
+	// prevent from calling twice
 	if (LoadBuildFlag)
 	{
 		auto szName = 0;
@@ -144,6 +145,7 @@ static bool SaveBuildFlag = true;
 
 void SuperHero::save(ofstream& out_file) const
 {
+	// prevent from calling twice
 	if (SaveBuildFlag)
 	{
 		// get name length

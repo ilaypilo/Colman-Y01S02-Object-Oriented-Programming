@@ -60,11 +60,6 @@ void Spiderman::setWebSize(double webSize)
 // AnimalBasedSuperHero
 // [webSize]			double			8 bytes
 
-
-
-#define CLASS_ID "SP"
-#define CLASS_ID_SIZE 2
-
 void Spiderman::load(ifstream& in_file)
 {
 	AnimalBasedSuperHero::load(in_file);
