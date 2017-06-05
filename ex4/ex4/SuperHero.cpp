@@ -122,8 +122,8 @@ void SuperHero::load(ifstream& in_file)
 	auto classType = new char[CLASS_ID_SIZE+1]();
 	in_file.read(classType, CLASS_ID_SIZE);
 	// validate the file for the class
-	if (strstr(CLASS_ID, classType))
-	{
+	//if (strstr(CLASS_ID, classType))
+	//{
 		// read name size
 		in_file.read((char *)&szName, sizeof(szName));
 		// read the name to temp name
@@ -131,12 +131,12 @@ void SuperHero::load(ifstream& in_file)
 		in_file.read(tempName, szName);
 		// set the name
 		setName(tempName);
-		delete tempName;
+		delete[]tempName;
 		// read age
 		in_file.read((char*)&_age, sizeof(_age));
 		// read radioactive
 		in_file.read((char*)&_radioactive, sizeof(_radioactive));
-	}
+	//}
 	
 }
 void SuperHero::save(ofstream& out_file) const

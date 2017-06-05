@@ -86,15 +86,60 @@ int ProfessionBasedSuperHero::getYearsExperience() const
 {
 	return _yearsExperience;
 }
+
 //=================================================================================//
 // load and save functions
 //=================================================================================//
 
+// file type
+// SuperHero
+// [szProfession]			int			4 bytes
+// [Profession]				char *		szProfession
+// [yearsExperience]		int			4 bytes
+
+#define CLASS_ID "PB"
+#define CLASS_ID_SIZE 2
+
 void ProfessionBasedSuperHero::load(ifstream& in_file)
 {
-	
+	SuperHero::load(in_file);
+	// ProfessionBasedSuperHero
+	auto szProfession = 0;
+	// read _profession size
+	in_file.read((char*)&szProfession, sizeof(szProfession));
+	// read _profession
+	auto tempProfession = new char[szProfession + 1]();
+	in_file.read((char*)tempProfession, szProfession);
+	setProfession(tempProfession);
+	delete[]tempProfession;
+	// read _yearsExperience
+	in_file.read((char*)&_yearsExperience, sizeof(_yearsExperience));
 }
+
 void ProfessionBasedSuperHero::save(ofstream& out_file) const
 {
+	// SuperHero
+	// get length of char *
+	int szName = strlen(getName());
+	// write class ID
+	out_file.write(CLASS_ID, CLASS_ID_SIZE);
+	// write _name size
+	out_file.write((char *)&szName, sizeof(szName));
+	// write the _name
+	out_file.write(_name, szName);
+	// write _age
+	out_file.write((char*)&_age, sizeof(_age));
+	// write _radioactive
+	out_file.write((char*)&_radioactive, sizeof(_radioactive));
+
+	// ProfessionBasedSuperHero
+	// get length of char *
+	int szProfession = strlen(getProfession());
+	// write _profession size
+	out_file.write((char*)&szProfession, sizeof(szProfession));
+	// write _profession
+	out_file.write(_profession, szProfession);
+	// write _yearsExperience
+	out_file.write((char*)&_yearsExperience, sizeof(_yearsExperience));
 	
 }

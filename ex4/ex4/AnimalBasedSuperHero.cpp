@@ -66,11 +66,52 @@ const char* AnimalBasedSuperHero::getAnimal() const
 //=================================================================================//
 // load and save functions
 //=================================================================================//
+
+// file type
+// SuperHero
+// [szAnimal]			int			4 bytes
+// [Animal]				char *		szAnimal
+
+
+
+#define CLASS_ID "AB"
+#define CLASS_ID_SIZE 2
+
 void AnimalBasedSuperHero::load(ifstream& in_file)
 {
-	
+	SuperHero::load(in_file);
+	// ProfessionBasedSuperHero
+	auto szAnimal = 0;
+	// read _profession size
+	in_file.read((char*)&szAnimal, sizeof(szAnimal));
+	// read _profession
+	auto tempAnimal = new char[szAnimal + 1]();
+	in_file.read((char*)tempAnimal, szAnimal);
+	setAnimal(tempAnimal);
+	delete[]tempAnimal;
 }
+
 void AnimalBasedSuperHero::save(ofstream& out_file) const
 {
-	
+	// SuperHero
+	// get length of char *
+	int szName = strlen(getName());
+	// write class ID
+	out_file.write(CLASS_ID, CLASS_ID_SIZE);
+	// write _name size
+	out_file.write((char *)&szName, sizeof(szName));
+	// write the _name
+	out_file.write(_name, szName);
+	// write _age
+	out_file.write((char*)&_age, sizeof(_age));
+	// write _radioactive
+	out_file.write((char*)&_radioactive, sizeof(_radioactive));
+
+	// AnimalBasedSuperHero
+	// get length of char *
+	int szAnimal = strlen(getAnimal());
+	// write _profession size
+	out_file.write((char*)&szAnimal, sizeof(szAnimal));
+	// write _profession
+	out_file.write(_animal, szAnimal);
 }
