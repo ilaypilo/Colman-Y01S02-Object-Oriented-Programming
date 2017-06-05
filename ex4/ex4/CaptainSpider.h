@@ -17,7 +17,7 @@ public:
 	CaptainSpider(const char* profession, int yearsExperience, double ageIncludingFreezing, const char* animal, double webSize);
 	CaptainSpider(double ageIncludingFreezing, double webSize);
 	CaptainSpider(const CaptainSpider& captainSpider);
-	~CaptainSpider();
+	/*virtual */~CaptainSpider();
 
 	virtual void load(ifstream& in_file);
 	virtual void save(ofstream& out_file) const;
