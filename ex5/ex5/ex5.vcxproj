@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClCompile Include="mainTrain.cpp" />
     <ClCompile Include="Student.cpp" />
+    <ClCompile Include="TreeNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Student.h" />
