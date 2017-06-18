@@ -44,37 +44,79 @@ public:
 	}
 	void addChild(T* data)
 	{
-		_children->push_back(new TreeNode<T>(this, data));
+		if (_children.size() != 4) 
+		{
+			_children.push_back(new TreeNode<T>(this, data));
+		}
 	}
 
 	void addChild(TreeNode<T>* newChild)
 	{
 		newChild->setParent(this);
-		_children->push_back(newChild);
+		_children.push_back(newChild);
 	}
 	//removes the nodes last entered child or if no children - does nothing
 	void removeChild() 
 	{ 
-		if(_children->size())
+		if(_children.size())
 		{
-			_children->erase(_children->end());
+			_children.erase(_children.end()-1);
 		}
 	}
 	// returns ptr or NULL
 	TreeNode<T>* findChild(T* data) const
 	{
-		for(auto i=0; i<_children->size();i++)
+		for(auto i=0; i<_children.size();i++)
 		{
-			if(_children->at(i)->_data == data)
+			if(_children.at(i)->_data == data)
 			{
-				return _children->at(i);
+				return _children.at(i);
 			}
 		}
+		return nullptr;
 	}
-	int findChildIndx(T* data) const; // returns childs indx or -1
-	TreeNode<T>* getChild(int indx) const;
-	TreeNode<T>* getNextChild() const;
-	TreeNode<T>* getPrevChild() const;
+	// returns childs indx or -1
+	int findChildIndx(T* data) const 
+	{
+		for (auto i = 0; i<_children.size(); i++)
+		{
+			if (_children.at(i)->_data == data)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+	TreeNode<T>* getChild(int indx) const 
+	{
+		if (indx >= 0 && indx < _children.size()) {
+			return _children.at(indx);
+		}
+		return nullptr;
+	}
+	TreeNode<T>* getNextChild() const 
+	{
+		// if I'm the root return my first child if I have one
+		if (_parent == nullptr) 
+		{
+			return _children->size() ? _children->at(0) : nullptr;
+		}
+		// if i'm not the last child, return my next brother
+		auto myIndex = _parent->findChildIndx(_data);
+		else if (/*myIndex+1 != MAX_CHILDREN && */_parent->_children->size() > myIndex+1)
+		{
+			return _parent->_children->at(myIndex + 1);
+		}
+		// if I'm the last child return my father first son of first son
+		else if (_parent->_children->size() == myIndex + 1)
+		{
+			return _parent->_children->at(0)->_children->size() ? _parent->_children->at(0)->_children-at(0) : nullptr;
+		}
+	}
+	TreeNode<T>* getPrevChild() const 
+	{
+
+	}
 	TreeNode<T>* getParent() const
 	{
 		return _parent;
