@@ -78,7 +78,7 @@ public:
 	// returns childs indx or -1
 	int findChildIndx(T* data) const 
 	{
-		for (auto i = 0; i<_children.size(); i++)
+		for (auto i = 0; i<getNumChildren(); i++)
 		{
 			if (_children.at(i)->_data == data)
 			{
@@ -96,26 +96,48 @@ public:
 	}
 	TreeNode<T>* getNextChild() const 
 	{
+		
 		// if I'm the root return my first child if I have one
 		if (_parent == nullptr) 
 		{
-			return _children->size() ? _children->at(0) : nullptr;
+			return _children.size() ? _children.at(0) : nullptr;
 		}
 		// if i'm not the last child, return my next brother
-		auto myIndex = _parent->findChildIndx(_data);
-		else if (/*myIndex+1 != MAX_CHILDREN && */_parent->_children->size() > myIndex+1)
+		else 
 		{
-			return _parent->_children->at(myIndex + 1);
-		}
-		// if I'm the last child return my father first son of first son
-		else if (_parent->_children->size() == myIndex + 1)
-		{
-			return _parent->_children->at(0)->_children->size() ? _parent->_children->at(0)->_children-at(0) : nullptr;
+			auto myIndex = _parent->findChildIndx(_data);
+			if (_parent->getNumChildren() > myIndex + 1)
+			{
+				return _parent->_children.at(myIndex + 1);
+			}
+			// if I'm the last child return my father first son of first son
+			else if (_parent->getNumChildren() == myIndex + 1)
+			{
+				return _parent->_children.at(0)->getNumChildren() ? _parent->_children.at(0)->_children.at(0) : nullptr;
+			}
 		}
 	}
 	TreeNode<T>* getPrevChild() const 
 	{
-
+		// if I'm the root return null
+		if (_parent == nullptr)
+		{
+			return nullptr;
+		}
+		// if i'm not the last child, return my prev brother
+		else
+		{
+			auto myIndex = _parent->findChildIndx(_data);
+			if (myIndex > 0)
+			{
+				return _parent->_children.at(myIndex - 1);
+			}
+			// if I'm the first child return my father
+			else if (myIndex == 0)
+			{
+				return _parent;
+			}
+		}
 	}
 	TreeNode<T>* getParent() const
 	{
@@ -127,7 +149,7 @@ public:
 	}
 	int getNumChildren() const
 	{
-		return _children->size();
+		return _children.size();
 	}
 
 };
