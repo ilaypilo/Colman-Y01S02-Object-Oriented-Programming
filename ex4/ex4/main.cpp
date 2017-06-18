@@ -4,6 +4,7 @@
 #include "CaptainAmerica.h"
 #include "Spiderman.h"
 #include "CaptainSpider.h"
+#include "Avengers.h"
 
 int main()
 {
@@ -94,7 +95,51 @@ int main()
 	f12.close();
 	delete blue_captain_spider;
 
+	ofstream f13("CheckBigListRead.bin", ios::binary);
+	Avengers HeroList;
+	// list size
+	auto szHeroList = 6;
 
+	// create a psedo file of Avengers
+	f13.write((char*)&szHeroList, sizeof(szHeroList));
+
+	// create the objects
+	HeroList.saveType(f13, &noob_batman_from_file);
+	noob_batman_from_file.save(f13);
+
+	HeroList.saveType(f13, &professional_batman_from_file);
+	professional_batman_from_file.save(f13);
+
+	HeroList.saveType(f13, &captain_california_from_file);
+	captain_california_from_file.save(f13);
+
+	HeroList.saveType(f13, &animal_batman_from_file);
+	animal_batman_from_file.save(f13);
+
+	HeroList.saveType(f13, &black_spiderman_from_file);
+	black_spiderman_from_file.save(f13);
+
+	HeroList.saveType(f13, &blue_captain_spider_from_file);
+	blue_captain_spider_from_file.save(f13);
+
+	f13.close();
+
+	ifstream f15("CheckBigListRead.bin", ios::binary);
+	HeroList.load(f15);
+	f15.close();
+
+	ofstream f16("CheckBigListWrite.bin", ios::binary);
+	HeroList.save(f16);
+	f16.close();
+
+	ifstream f17("CheckBigListWrite.bin", ios::binary);
+	Avengers HeroList2;
+	HeroList2.load(f17);
+	f17.close();
+
+	auto HeroList3 = new Avengers;
+	HeroList3->setSuperHeros(HeroList2.getSuperHeros(), 6);
+	delete HeroList3;
 
 	return 0;
 }

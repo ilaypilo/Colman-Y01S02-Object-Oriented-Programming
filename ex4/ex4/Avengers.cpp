@@ -9,7 +9,13 @@ Avengers::Avengers() : _superHeros(nullptr), _numSuperHeros(0)
 // Destructor
 Avengers::~Avengers()
 {
-	
+	for (auto i = 0; i < _numSuperHeros; i++)
+	{
+		if (_superHeros[i])
+		{
+			delete _superHeros[i];
+		}
+	}
 }
 
 #define CLASS_ID_SIZE 2
@@ -105,6 +111,7 @@ void Avengers::setSuperHeros(SuperHero** superHeros, int size)
 		// deep copy for all objects
 		for (auto i = 0; i < size; i++)
 		{
+			// use dynamic_cast for constructors
 			if (typeid(*superHeros[i]).name() == typeid(SuperHero).name())
 				_superHeros[i] = new SuperHero(*superHeros[i]);
 			else if (typeid(*superHeros[i]).name() == typeid(AnimalBasedSuperHero).name())
