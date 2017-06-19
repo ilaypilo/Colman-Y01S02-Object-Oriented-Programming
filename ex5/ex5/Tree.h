@@ -7,14 +7,35 @@ template <class T>
 class Tree
 {
 	TreeNode<T>* _root;
-	int _numNodes;//size of tree
+	int _numNodes; //size of tree
 public:
 	Tree() : _root(nullptr), _numNodes(0) {};
 	~Tree() {};
 	void save(ofstream& out) const;
 	void load(ifstream& in);
 	void freeMemory();
-	bool treeContains(const T& item);
+	bool treeContains(const T& item) 
+	{
+		queue<TreeNode<T>*> q;
+		q.push(_root);
+
+		while (!q.empty())
+		{
+			TreeNode<T>* tmp = q.front();
+			q.pop();
+
+			if (*tmp->getData() == item)
+				return true;
+			else
+			{
+				for (auto i = 0; i < tmp->getNumChildren(); i++)
+				{
+					q.push(tmp->getChild(i));
+				}
+			}
+		}
+		return false;
+	}
 	void addNode(const T& item) 
 	{
 		if (_root == nullptr) {
@@ -22,46 +43,35 @@ public:
 		}
 		else 
 		{
-			auto next = _root;
-			auto last = _root;
-			// go to the last element
-			while (next)
+			queue<TreeNode<T>*> q;
+			q.push(_root);
+			while (!q.empty())
 			{
-				last = next;
-				next = next->getNextChild();
-			}
-			// add brother
-			if (!last->getParent())
-			{
-				last->addChild(new T(item));
-			}
-			else if (last->getParent()->getNumChildren() < 4)
-			{
-				last->getParent()->addChild(new T(item));
-			}
-			// add a son for the first son
-			else if (last->getParent()->getParent() == nullptr)
-			{
-				last->getParent()->getChild(0)->addChild(new T(item));
-			}
-			else if (last->getParent()->getParent()->findChildIndx(last->getParent()->getData()) != MAX_CHILDREN_INDEX)
-			{
-				auto index = last->getParent()->getParent()->findChildIndx(last->getParent()->getData());
-				last->getParent()->getParent()->getChild(index+1)->addChild(new T(item));
-			}
-			else 
-			{
-				last->getParent()->getParent()->getChild(0)->getChild(0)->addChild(new T(item));
+				TreeNode<T>* tmp = q.front();
+				q.pop();
+				// if we have less then 4 children add a child.
+				if (tmp->getNumChildren() < 4) 
+				{
+					tmp->addChild(new T(item));
+					break;
+				}
+				// if we have 4 children add them to the queue
+				for (auto i = 0; i < tmp->getNumChildren(); i++)
+				{
+					q.push(tmp->getChild(i));
+				}
 			}
 		}
 		_numNodes++;
 	}
-	const T& getNodeData(int index);
+	const T& getNodeData(int index) 
+	{
+		return _data;
+	}
 	TreeNode<T>* begin() const 
 	{
 		return _root;
 	}
-
 	class Iterator {
 		TreeNode<T> *_p;
 		friend class Tree<T>;

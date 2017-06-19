@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <string.h>
+#include <queue> 
 
 using namespace std;
 
@@ -95,65 +96,76 @@ public:
 		}
 		return nullptr;
 	}
+	// get the node root
+	TreeNode<T>* getRoot() const 
+	{
+		auto root = const_cast<TreeNode<T>*>(this);
+		while (root->getParent())
+		{
+			root = root->getParent();
+		}
+		return root;
+	}
 	TreeNode<T>* getNextChild() const 
 	{
-		
-		// if I'm the root return my first child if I have one
-		if (_parent == nullptr) 
+		// get the root
+		auto root = getRoot();
+		// create the queue
+		queue<TreeNode<T>*> q;
+		q.push(root);
+		// search our item in the queue
+		while (!q.empty())
 		{
-			return getChild(0);
-		}
-		else 
-		{
-			auto myIndex = _parent->findChildIndx(_data);
-			auto myParentIndex = _parent->getParent() ? _parent->getParent()->findChildIndx(_parent->_data) : MAX_CHILDREN_INDEX;
-			// if i'm not the last child, return my next brother
-			if (_parent->getNumChildren() > myIndex + 1)
+			// get item from the queue
+			TreeNode<T>* tmp = q.front();
+			q.pop();
+			// append all children to the queue
+			for (auto i = 0; i < tmp->getNumChildren(); i++)
 			{
-				return _parent->getChild(myIndex + 1);
+				q.push(tmp->getChild(i));
 			}
-			else if (_parent->getNumChildren() == MAX_CHILDREN && myParentIndex != MAX_CHILDREN_INDEX)
+
+			if (*tmp->getData() == *_data) 
 			{
-				return _parent->getParent()->getChild(myParentIndex+1)->getNumChildren() ? _parent->getParent()->getChild(myParentIndex + 1)->getChild(0) : nullptr;
-			}
-			// if I'm the last child return my father first son of first son
-			else if (_parent->getNumChildren() == MAX_CHILDREN && myParentIndex == MAX_CHILDREN_INDEX)
-			{
-				if (_parent->getParent()) {
-					return  _parent->getParent()->getChild(0)->getChild(0)->getChild(0);
+				// return the next in the queue
+				if (!q.empty()) {
+					return q.front();
 				}
-				return _parent->getChild(0)->getChild(0);
+				return nullptr;
 			}
-			return nullptr;
 		}
+		return nullptr;
 	}
 	TreeNode<T>* getPrevChild() const 
 	{
 
-		// if I'm the root return my first child if I have one
-		if (_parent == nullptr)
+		// get the root
+		auto root = getRoot();
+		// create the queue
+		queue<TreeNode<T>*> q;
+		q.push(root);
+		// search our item in the queue
+		TreeNode<T>* lastTemp = nullptr;
+		while (!q.empty())
 		{
-			return nullptr;
+			// get item from the queue
+			TreeNode<T>* tmp = q.front();
+			q.pop();
+			// append all children to the queue
+			for (auto i = 0; i < tmp->getNumChildren(); i++)
+			{
+				q.push(tmp->getChild(i));
+			}
+
+			if (*tmp->getData() == *_data)
+			{
+				// return the one we just, if this is root return nullptr
+				return lastTemp;
+				
+			}
+			lastTemp = tmp;
 		}
-		else
-		{
-			auto myIndex = _parent->findChildIndx(_data);
-			auto myParentIndex = _parent->getParent() ? _parent->getParent()->findChildIndx(_parent->_data) : 0;
-			// if i'm not the first child, return my prev brother
-			if (myIndex != 0)
-			{
-				return _parent->getChild(myIndex - 1);
-			}
-			else if (myIndex == 0 && myParentIndex != 0)
-			{
-				return _parent->getParent()->getChild(myParentIndex - 1)->getNumChildren() ? _parent->getParent()->getChild(myParentIndex - 1)->getChild(MAX_CHILDREN_INDEX) : nullptr;
-			}
-			// if I'm the first child of the first child
-			else if (myIndex == 0 && myParentIndex == 0)
-			{
-				return _parent;
-			}
-		}
+		return nullptr;
 	}
 	TreeNode<T>* getParent() const
 	{

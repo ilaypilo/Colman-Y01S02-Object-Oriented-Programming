@@ -24,8 +24,7 @@ int main() {
 	Student bla4("bla4", 90);
 
 	TreeNode<Student> root(&mor);
-	root.getNextChild();
-	root.getPrevChild();
+
 	TreeNode<Student> amirNode(&amir);
 	root.addChild(&amirNode);
 	root.addChild(&karmit);
@@ -35,7 +34,10 @@ int main() {
 	root.removeChild();
 	root.addChild(&nitay);
 	root.addChild(&hanan);
-	
+
+	root.getChild(2)->getNextChild();
+	root.getPrevChild();
+
 	root.findChildIndx(&nitay);
 	root.findChildIndx(&shani);
 	root.findChild(&hanan);
@@ -72,14 +74,14 @@ int main() {
 	studentTree.addNode(bla3);
 	studentTree.addNode(bla4);
 
-
-	//bool val = studentTree.treeContains(nurit);
-	//if (val != 1)
-	//	puts("Error in treeContains");
-	//Student x("x", 0);
-	//val = studentTree.treeContains(x);
-	//if (val != 0)
-	//	puts("Error in treeContains");
+	studentTree.treeContains(bla4);
+	bool val = studentTree.treeContains(nurit);
+	if (val != 1)
+		puts("Error in treeContains");
+	Student x("x", 0);
+	val = studentTree.treeContains(x);
+	if (val != 0)
+		puts("Error in treeContains");
 
 
 
