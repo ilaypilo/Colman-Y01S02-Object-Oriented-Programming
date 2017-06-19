@@ -33,7 +33,11 @@ public:
 	// destructor
 	~TreeNode()
 	{
-		
+		for (auto i = 0; i<_children.size(); i++)
+		{
+			delete getChild(i);
+		}
+		if (_data) delete _data;
 	}
 
 	T* getData() const

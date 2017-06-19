@@ -11,7 +11,10 @@ class Tree
 	int _numNodes; //size of tree
 public:
 	Tree() : _root(nullptr), _numNodes(0) {};
-	~Tree() {};
+	~Tree()
+	{
+		delete _root;
+	};
 	void save(ofstream& out) const 
 	{
 		out.write((char*)&_numNodes, sizeof(_numNodes));
@@ -33,7 +36,11 @@ public:
 			addNode(tmpStudent);
 		}
 	}
-	void freeMemory();
+	void freeMemory() 
+	{
+		delete _root;
+		_numNodes = 0;
+	}
 	bool treeContains(const T& item) 
 	{
 		queue<TreeNode<T>*> q;

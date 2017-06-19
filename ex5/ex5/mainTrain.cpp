@@ -23,40 +23,40 @@ int main() {
 	Student bla3("bla3", 28);
 	Student bla4("bla4", 90);
 
-	TreeNode<Student> root(&mor);
+	//TreeNode<Student> root(&mor);
 
-	TreeNode<Student> amirNode(&amir);
-	root.addChild(&amirNode);
-	root.addChild(&karmit);
-	root.addChild(&nitay);
-	root.addChild(&hanan);
-	root.removeChild();
-	root.removeChild();
-	root.addChild(&nitay);
-	root.addChild(&hanan);
+	//TreeNode<Student> amirNode(&amir);
+	//root.addChild(&amirNode);
+	//root.addChild(&karmit);
+	//root.addChild(&nitay);
+	//root.addChild(&hanan);
+	//root.removeChild();
+	//root.removeChild();
+	//root.addChild(&nitay);
+	//root.addChild(&hanan);
 
-	root.getChild(2)->getNextChild();
-	root.getPrevChild();
+	//root.getChild(2)->getNextChild();
+	//root.getPrevChild();
 
-	root.findChildIndx(&nitay);
-	root.findChildIndx(&shani);
-	root.findChild(&hanan);
-	root.findChild(&shani);
-	root.getChild(5);
-	root.getChild(2);
+	//root.findChildIndx(&nitay);
+	//root.findChildIndx(&shani);
+	//root.findChild(&hanan);
+	//root.findChild(&shani);
+	//root.getChild(5);
+	//root.getChild(2);
 
-	auto child1 = root.getNextChild();
-	auto child2 = child1->getNextChild();
-	auto child3 = child2->getNextChild();
-	auto child4 = child3->getNextChild();
-	auto grandson1 = child4->getNextChild();
-	child1->addChild(&sahar);
-	grandson1 = child4->getNextChild();
+	//auto child1 = root.getNextChild();
+	//auto child2 = child1->getNextChild();
+	//auto child3 = child2->getNextChild();
+	//auto child4 = child3->getNextChild();
+	//auto grandson1 = child4->getNextChild();
+	//child1->addChild(&sahar);
+	//grandson1 = child4->getNextChild();
 
-	auto child3_prev = child4->getPrevChild();
-	auto child2_prev = child3_prev->getPrevChild();
-	auto child1_prev = child2_prev->getPrevChild();
-	auto father_prev = child1_prev->getPrevChild();
+	//auto child3_prev = child4->getPrevChild();
+	//auto child2_prev = child3_prev->getPrevChild();
+	//auto child1_prev = child2_prev->getPrevChild();
+	//auto father_prev = child1_prev->getPrevChild();
 	
 	Tree<Student> studentTree;
 	studentTree.addNode(mor);
@@ -95,7 +95,8 @@ int main() {
 	newTree.load(in_file);
 	if (1 != newTree.treeContains(mor))
 		puts("Error in treeContains");
-	
+	in_file.close();
+
 	Student temp = newTree.getNodeData(5);
 	if (temp.getAge() != boaz.getAge())
 		puts("error in getNodeData");
@@ -104,8 +105,6 @@ int main() {
 	it++;
 	if (strcmp((*it).getName(), "AmirV") != 0)
 		puts("Iterator error");
-
-
 
 	puts("done");
 	return 0;
