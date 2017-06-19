@@ -18,6 +18,10 @@ int main() {
 	Student nurit("Nurit", 2);
 	Student shani("Shani", 28);
 	Student david("David", 90);
+	Student bla1("bla1", 33);
+	Student bla2("bla2", 2);
+	Student bla3("bla3", 28);
+	Student bla4("bla4", 90);
 
 	TreeNode<Student> root(&mor);
 	root.getNextChild();
@@ -52,17 +56,21 @@ int main() {
 	auto child1_prev = child2_prev->getPrevChild();
 	auto father_prev = child1_prev->getPrevChild();
 	
-	//Tree<Student> studentTree;
-	//studentTree.addNode(mor);
-	//studentTree.addNode(amir);
-	//studentTree.addNode(karmit);
-	//studentTree.addNode(nitay);
-	//studentTree.addNode(hanan);
-	//studentTree.addNode(boaz);
-	//studentTree.addNode(sahar);
-	//studentTree.addNode(david);
-	//studentTree.addNode(nurit);
-	//studentTree.addNode(shani);
+	Tree<Student> studentTree;
+	studentTree.addNode(mor);
+	studentTree.addNode(amir);
+	studentTree.addNode(karmit);
+	studentTree.addNode(nitay);
+	studentTree.addNode(hanan);
+	studentTree.addNode(boaz);
+	studentTree.addNode(sahar);
+	studentTree.addNode(david);
+	studentTree.addNode(nurit);
+	studentTree.addNode(shani);
+	studentTree.addNode(bla1);
+	studentTree.addNode(bla2);
+	studentTree.addNode(bla3);
+	studentTree.addNode(bla4);
 
 
 	//bool val = studentTree.treeContains(nurit);

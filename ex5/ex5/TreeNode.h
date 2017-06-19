@@ -6,6 +6,7 @@
 using namespace std;
 
 #define MAX_CHILDREN 4
+#define MAX_CHILDREN_INDEX (MAX_CHILDREN-1)
 template<class T>
 class TreeNode {
 
@@ -100,40 +101,55 @@ public:
 		// if I'm the root return my first child if I have one
 		if (_parent == nullptr) 
 		{
-			return _children.size() ? _children.at(0) : nullptr;
+			return getChild(0);
 		}
-		// if i'm not the last child, return my next brother
 		else 
 		{
 			auto myIndex = _parent->findChildIndx(_data);
+			auto myParentIndex = _parent->getParent() ? _parent->getParent()->findChildIndx(_parent->_data) : MAX_CHILDREN_INDEX;
+			// if i'm not the last child, return my next brother
 			if (_parent->getNumChildren() > myIndex + 1)
 			{
-				return _parent->_children.at(myIndex + 1);
+				return _parent->getChild(myIndex + 1);
+			}
+			else if (_parent->getNumChildren() == MAX_CHILDREN && myParentIndex != MAX_CHILDREN_INDEX)
+			{
+				return _parent->getParent()->getChild(myParentIndex+1)->getNumChildren() ? _parent->getParent()->getChild(myParentIndex + 1)->getChild(0) : nullptr;
 			}
 			// if I'm the last child return my father first son of first son
-			else if (_parent->getNumChildren() == myIndex + 1)
+			else if (_parent->getNumChildren() == MAX_CHILDREN && myParentIndex == MAX_CHILDREN_INDEX)
 			{
-				return _parent->_children.at(0)->getNumChildren() ? _parent->_children.at(0)->_children.at(0) : nullptr;
+				if (_parent->getParent()) {
+					return  _parent->getParent()->getChild(0)->getChild(0)->getChild(0);
+				}
+				return _parent->getChild(0)->getChild(0);
 			}
+			return nullptr;
 		}
 	}
 	TreeNode<T>* getPrevChild() const 
 	{
-		// if I'm the root return null
+
+		// if I'm the root return my first child if I have one
 		if (_parent == nullptr)
 		{
 			return nullptr;
 		}
-		// if i'm not the last child, return my prev brother
 		else
 		{
 			auto myIndex = _parent->findChildIndx(_data);
-			if (myIndex > 0)
+			auto myParentIndex = _parent->getParent() ? _parent->getParent()->findChildIndx(_parent->_data) : 0;
+			// if i'm not the first child, return my prev brother
+			if (myIndex != 0)
 			{
-				return _parent->_children.at(myIndex - 1);
+				return _parent->getChild(myIndex - 1);
 			}
-			// if I'm the first child return my father
-			else if (myIndex == 0)
+			else if (myIndex == 0 && myParentIndex != 0)
+			{
+				return _parent->getParent()->getChild(myParentIndex - 1)->getNumChildren() ? _parent->getParent()->getChild(myParentIndex - 1)->getChild(MAX_CHILDREN_INDEX) : nullptr;
+			}
+			// if I'm the first child of the first child
+			else if (myIndex == 0 && myParentIndex == 0)
 			{
 				return _parent;
 			}
