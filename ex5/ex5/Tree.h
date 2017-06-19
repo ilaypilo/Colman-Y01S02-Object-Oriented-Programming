@@ -1,5 +1,6 @@
 #pragma once
 #include "TreeNode.h"
+#include "Student.h"
 #include <fstream>
 
 
@@ -11,8 +12,27 @@ class Tree
 public:
 	Tree() : _root(nullptr), _numNodes(0) {};
 	~Tree() {};
-	void save(ofstream& out) const;
-	void load(ifstream& in);
+	void save(ofstream& out) const 
+	{
+		out.write((char*)&_numNodes, sizeof(_numNodes));
+		auto node = _root;
+		for (auto i = 0; i < _numNodes; i++) 
+		{
+			node->getData()->save(out);
+			node = node->getNextChild();
+		}
+	}
+	void load(ifstream& in) {
+		
+		int treeSize;
+		in.read((char*)&treeSize, sizeof(treeSize));
+		for (auto i = 0; i < treeSize; i++)
+		{
+			Student tmpStudent;
+			tmpStudent.load(in);
+			addNode(tmpStudent);
+		}
+	}
 	void freeMemory();
 	bool treeContains(const T& item) 
 	{
@@ -66,7 +86,12 @@ public:
 	}
 	const T& getNodeData(int index) 
 	{
-		return _data;
+		auto node = _root;
+		for (auto i = 0; i < index; i++)
+		{
+			node = node->getNextChild();
+		}
+		return *node->getData();
 	}
 	TreeNode<T>* begin() const 
 	{
@@ -78,32 +103,49 @@ public:
 	public:
 		Iterator(TreeNode<T> *pt = 0) : _p(pt) {}
 
-		int operator!=(Iterator itr) const {
-
+		int operator!=(Iterator itr) const 
+		{
+			return this != itr;
 		}
 
-		int operator==(Iterator itr) const {
-
+		int operator==(Iterator itr) const 
+		{
+			return this == itr;
 		}
 
-		Iterator& operator++() throw (char*){
-
+		Iterator& operator++() throw (char*)
+		{
+			_p = _p->getNextChild();
+			return *this;
 		}
 
-		Iterator& operator++(int) throw (char*) {
-
+		Iterator& operator++(int) throw (char*) 
+		{
+			//for (auto i = 0; i < times; i++)
+			//{
+				_p = _p->getNextChild();
+			//}
+			return *this;
 		}
 
-		Iterator& operator--() throw(char*) {
-
+		Iterator& operator--() throw(char*) 
+		{
+			_p = _p->getPrevChild();
+			return *this;
 		}
 		
-		Iterator& operator--(int) throw(char*) {
-
+		Iterator& operator--(int) throw(char*) 
+		{
+			//for (auto i = 0; i < times; i++)
+			//{
+				_p = _p->getPrevChild();
+			//}
+			return *this;
 		}
 
-		T& operator*() throw (char*) {
-
+		T& operator*() throw (char*) 
+		{
+			return *_p->getData();
 		}
 
 	};

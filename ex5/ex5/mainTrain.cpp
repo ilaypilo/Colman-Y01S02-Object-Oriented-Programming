@@ -85,29 +85,29 @@ int main() {
 
 
 
-	//ofstream out_file("out_file.bin",ios::binary|ios::out);
-	//studentTree.save(out_file);
-	//out_file.close();
+	ofstream out_file("out_file.bin",ios::binary|ios::out);
+	studentTree.save(out_file);
+	out_file.close();
 
 
-	//ifstream in_file("out_file.bin", ios::binary | ios::in);
-	//Tree<Student> newTree;
-	//newTree.load(in_file);
-	//if (1 != newTree.treeContains(mor))
-	//	puts("Error in treeContains");
-	//
-	//Student temp = newTree.getNodeData(5);
-	//if (temp.getAge() != boaz.getAge())
-	//	puts("error in getNodeData");
-	//
-	//Tree<Student>::Iterator it = studentTree.begin();
-	//it++;
-	//if (strcmp((*it).getName(), "AmirV") != 0)
-	//	puts("Iterator error");
+	ifstream in_file("out_file.bin", ios::binary | ios::in);
+	Tree<Student> newTree;
+	newTree.load(in_file);
+	if (1 != newTree.treeContains(mor))
+		puts("Error in treeContains");
+	
+	Student temp = newTree.getNodeData(5);
+	if (temp.getAge() != boaz.getAge())
+		puts("error in getNodeData");
+	
+	Tree<Student>::Iterator it = studentTree.begin();
+	it++;
+	if (strcmp((*it).getName(), "AmirV") != 0)
+		puts("Iterator error");
 
 
 
-	//puts("done");
+	puts("done");
 	return 0;
 }
 
