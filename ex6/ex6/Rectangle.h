@@ -46,13 +46,14 @@ struct TreeSplitRectangle
 {
 	vector<Rectangle> operator()(const Rectangle& rect) const 
 	{
-
+		// Rectangle: int x, int y, int width, int height
+		auto wh = rect.width() / 2;
+		auto hh = rect.height() / 2;
 		vector<Rectangle> splited;
-		auto h = rect.width() / 2;
-		Rectangle q0(rect.x()+h, rect.y(), h, h);
-		Rectangle q1(rect.x(), rect.y(), h, h);
-		Rectangle q2(rect.x(), rect.y()+h, h, h);
-		Rectangle q3(rect.x()+h, rect.y()+h, h, h);
+		Rectangle q0(rect.x()+ wh, rect.y(), wh, hh);
+		Rectangle q1(rect.x(), rect.y(), wh, hh);
+		Rectangle q2(rect.x(), rect.y()+ hh, wh, hh);
+		Rectangle q3(rect.x()+ wh, rect.y()+ hh, wh, hh);
 		splited.push_back(q0);
 		splited.push_back(q1);
 		splited.push_back(q2);
@@ -66,23 +67,25 @@ struct TreeIndexRectangle
 {
 	int operator()(const Rectangle& outer, const Rectangle& inner) const 
 	{
-		auto h = outer.width() / 2;
+
 		auto q = -1;
-		if(inner.width() > h || inner.height() > h)
+		if (inner.y() + inner.height() > (outer.y() + outer.height()) ||
+			inner.x() + inner.width() > (outer.x() + outer.width()) )
 		{
-			return q;
+			q = -1;
 		}
+
 		//check x
-		if (inner.x() + inner.width() < h)
+		if (inner.x() < outer.x() + (outer.width() / 2))
 		{
 			q = 1;
 		}
-		else if (inner.x() + inner.width() < (outer.x() + outer.width()))
+		else
 		{
 			q = 0;
 		}
 		//check y
-		if (inner.y() + inner.height() > (outer.y() + h))
+		if (inner.y() > outer.y() + (outer.height() / 2))
 		{
 			switch (q) 
 			{
@@ -93,10 +96,6 @@ struct TreeIndexRectangle
 				q = 2;
 				break;
 			}
-		}
-		else if (inner.y() + inner.height() > (outer.y() + outer.height()))
-		{
-			q = -1;
 		}
 		return q;
 	}

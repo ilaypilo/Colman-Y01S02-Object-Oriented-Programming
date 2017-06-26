@@ -15,17 +15,21 @@ private:
 	T* _data;
 	TreeNode<T>* _parent;
 	vector< TreeNode<T>* > _children;
+	vector< TreeNode<T>* > _objects;
+	bool _quadrant;
 
 public:
 	// children constructor
 	TreeNode(TreeNode<T>* parent,T* data)
 	{
+		_quadrant = false;
 		_parent = parent;
 		_data = data;
 	}
 	// root constructor
 	TreeNode(T* data)
 	{
+		_quadrant = false;
 		_parent = nullptr;
 		_data = data;
 	}
@@ -39,6 +43,16 @@ public:
 		if (_data) delete _data;
 	}
 
+	
+	bool getQuadrant() const
+	{
+		return _quadrant;
+	}
+	void setQuadrant(bool quadrant)
+	{
+		_quadrant = quadrant;
+	}
+
 	T* getData() const
 	{
 		return _data;
@@ -49,23 +63,51 @@ public:
 	}
 	void addChild(T* data)
 	{
-		if (_children.size() != 4) 
-		{
-			_children.push_back(new TreeNode<T>(this, data));
-		}
+		auto newChild = new TreeNode<T>(this, data);
+		newChild->setParent(this);
+		newChild->setQuadrant(true);
+		_children.push_back(newChild);
 	}
 
 	void addChild(TreeNode<T>* newChild)
 	{
 		newChild->setParent(this);
+		newChild->setQuadrant(true);
 		_children.push_back(newChild);
 	}
+
+	void addObject(T* data)
+	{
+		auto newObject = new TreeNode<T>(this, data);
+		newObject->setParent(this);
+		_objects.push_back(newObject);
+	}
+
+	void addObject(TreeNode<T>* newObject)
+	{
+		newObject->setParent(this);
+		_objects.push_back(newObject);
+	}
+	void clearObjects()
+	{
+		_objects.clear();
+	}
+
 	//removes the nodes last entered child or if no children - does nothing
 	void removeChild() 
 	{ 
 		if(_children.size())
 		{
 			_children.erase(_children.end()-1);
+		}
+	}
+
+	//removes the nodes last entered child or if no children - does nothing
+	void removeObject()
+	{
+		if (_objects.size())
+		{
+			_objects.erase(_objects.end() - 1);
 		}
 	}
 	// returns ptr or NULL
@@ -99,6 +141,14 @@ public:
 		}
 		return nullptr;
 	}
+	TreeNode<T>* getObject(int indx) const
+	{
+		if (indx >= 0 && indx < _objects.size()) {
+			return _objects.at(indx);
+		}
+		return nullptr;
+	}
+
 	// get the node root
 	TreeNode<T>* getRoot() const 
 	{
@@ -181,6 +231,10 @@ public:
 	int getNumChildren() const
 	{
 		return _children.size();
+	}
+	int getNumObjects() const
+	{
+		return _objects.size();
 	}
 
 };
