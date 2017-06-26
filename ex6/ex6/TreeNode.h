@@ -15,6 +15,7 @@ private:
 	T* _data;
 	TreeNode<T>* _parent;
 	vector< TreeNode<T>* > _children;
+	//TODO: change _objects to vector<T>; 
 	vector< TreeNode<T>* > _objects;
 	bool _quadrant;
 
