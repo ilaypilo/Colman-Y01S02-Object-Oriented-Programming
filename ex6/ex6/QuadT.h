@@ -32,7 +32,7 @@ public:
 				// if we are a quadrant and we have less then _maxObjects
 				if (tmp->getQuadrant())
 				{
-					if (tmp->getNumObjects() < _maxObjects)
+					if (tmp->getNumObjects() < _maxObjects && tmp->getNumChildren() == 0)
 					{
 						tmp->addObject(new T(item));
 						break;
@@ -51,9 +51,13 @@ public:
 							tmp->getChild(idx)->addObject(new T(*tmp->getObject(i)->getData()));
 						}
 						tmp->clearObjects();
+						// add the last item
+						auto idx = indexRect(*tmp->getData(), item);
+						if (idx == -1) break;
+						tmp->getChild(idx)->addObject(new T(item));
 						break;
 					}
-				
+
 					// if we have 4 children add them to the queue
 					for (auto i = 0; i < tmp->getNumChildren(); i++)
 					{
@@ -108,11 +112,11 @@ public:
 			if (tmp->getQuadrant())
 			{
 				f(*tmp->getData());
-			}
-			for (auto i = 0; i < tmp->getNumChildren(); i++)
-			{
-				f(*tmp->getChild(i)->getData());
-				q.push(tmp->getChild(i));
+			
+				for (auto i = 0; i < tmp->getNumChildren(); i++)
+				{
+					q.push(tmp->getChild(i));
+				}
 			}
 		}
 	}
