@@ -7,17 +7,17 @@ class RoundList{
 
 	template<class E>
 	class Item{
-		_________ next;
+		Item<E>* next;
 		E data;
 	public:
 
 		Item() :next(NULL){}
-		Item(const E& pdata) :next(NULL), data(______){}
+		Item(const E& pdata) :next(NULL), data(pdata){}
 
-		void setNext(________ next){ this->next = next; }
-		_________ getNext(){ return next; }
-		void setData(__________){ this->data = data; }
-		________ getData(){ return data; }
+		void setNext(Item<E>* next){ this->next = next; }
+		Item<E>* getNext(){ return next; }
+		void setData(E data){ this->data = data; }
+		E& getData(){ return data; }
 	};
 
 
@@ -26,26 +26,39 @@ class RoundList{
 
 public:
 
-	RoundList(______) :head(____), size(__){ ____________________ }
+	RoundList(const T& item) : head(new Item<T>(item)), size(1)
+	{ 
+		head->setNext(head);
+	}
 
 	class Iterator{
-		________ p;
+		Item<T>* p;
 	public:
-		Iterator(_______ pt = NULL) :p(__){}
-		Iterator& operator++(int){
-			__________
-			return ________;
+		friend class RoundList<T>;
+		Iterator(Item<T>* pt = NULL) :p(pt){}
+		Iterator& operator++(int)
+		{
+			p = p->getNext();
+			return *this;
 		}
-		T& operator*(){ __________________ }
-		friend class ________________;
+		T& operator*() { return p->getData(); }
+		int operator==(Iterator it) const
+		{
+			return p == it.p;
+		}
+		int operator!=(Iterator it) const
+		{
+			return p != it.p;
+		}
+		
 	};
 
-	Iterator begin() { _____________ }
-	void insert(const T& newItem, Iterator it){
-		____________________________
-		____________________________
-		____________________________
-		____________________________
+	Iterator begin() { return head; }
+	void insert(const T& newItem, Iterator it)
+	{
+		auto myNewItem = new Item<T>(newItem);
+		myNewItem->setNext(it.p->getNext());
+		it.p->setNext(myNewItem);
 		size++;
 	}
 

@@ -142,6 +142,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="mainTrain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RoundList.h" />
+    <ClInclude Include="stlTest.h" />
+    <ClInclude Include="students.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

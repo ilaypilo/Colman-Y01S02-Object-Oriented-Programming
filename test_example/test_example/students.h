@@ -4,32 +4,49 @@
 using namespace std;
 
 class Student{
-	_______________
-	_______________
+	char * name;
+	double average;
 
 protected:
-	_______________
-
+	char type;
 public:
 
 	Student() :name(NULL), average(0){}
 
-	Student(const char* name, double average){ /* להשלים */}
+	Student(const char* name, double average)
+	{
+		this->name = new char[strlen(name) + 1]();
+		strcpy(this->name, name);
+		this->average = average;
+	}
 
-	_________ getName(){ return name; }
-	_________ getAverage(){ return average; }
+	char* getName(){ return name; }
+	double getAverage(){ return average; }
 
-	_______ void save(ofstream& out){ /* להשלים */}
+	virtual void save(ofstream& out)
+	{
+		auto szName = strlen(name);
+		out.write((char*)&szName, sizeof(szName));
+		out.write(name, szName);
+		out.write((char*)&average, sizeof(average));
+	}
 
-	_______ void load(ifstream& in){ /* להשלים */}
+	virtual void load(ifstream& in)
+	{
+		int szName;
+		in.read((char*)&szName, sizeof(szName));
+		name = new char[szName + 1]();
+		in.read(name, szName);
+		in.read((char*)&average, sizeof(average));
+	}
 
-	________ ~Student(){	delete[] name; };
+	virtual ~Student(){	delete[] name; };
 
 	void saveType(ofstream& out){
 		out.write(&type, 1);
 	}
 
-	_______ char loadType(ifstream& in){
+	static char loadType(ifstream& in){
 		char type;
 		in.read(&type, sizeof(char));
 		return type;
@@ -37,28 +54,83 @@ public:
 };
 
 
-class UndergradStudent ________________{
-	____________________;
+class UndergradStudent : public Student {
+	double projectGrade;
 public:
 	UndergradStudent(){}
 	UndergradStudent(const char* name, double average, double projectGrade) 
-:_________{ _______________; type = 'U'; }
+					: Student(name, average)
+	{
+		this->projectGrade = projectGrade;
+		type = 'U'; 
+	}
 
-______________________________________________
+	virtual void save(ofstream& out)
+	{
+		Student::save(out);
+		out.write((char *)&projectGrade, sizeof(projectGrade));
 
-______________________________________________
+	}
 
-______________________________________________
-
-______________________________________________
-
-______________________________________________
+	virtual void load(ifstream& in)
+	{
+		Student::load(in);
+		in.read((char *)&projectGrade, sizeof(projectGrade));
+	}
 
 };
 
-class MAStudent { /* להשלים */};
+class MAStudent : public Student {
+	int tesPages;
+public:
+	MAStudent() {}
+	MAStudent(const char* name, double average, int tesPages)
+		: Student(name, average)
+	{
+		this->tesPages = tesPages;
+		type = 'M';
+	}
 
-class PhdStudent { /* להשלים */};
+	virtual void save(ofstream& out)
+	{
+		Student::save(out);
+		out.write((char *)&tesPages, sizeof(tesPages));
+
+	}
+
+	virtual void load(ifstream& in)
+	{
+		Student::load(in);
+		in.read((char *)&tesPages, sizeof(tesPages));
+	}
+
+};
+
+class PhdStudent : public Student {
+	char pollGrade;
+public:
+	PhdStudent() {}
+	PhdStudent(const char* name, double average, char pollGrade)
+		: Student(name, average)
+	{
+		this->pollGrade = pollGrade;
+		type = 'P';
+	}
+
+	virtual void save(ofstream& out)
+	{
+		Student::save(out);
+		out.write((char *)&pollGrade, sizeof(pollGrade));
+
+	}
+
+	virtual void load(ifstream& in)
+	{
+		Student::load(in);
+		in.read((char *)&pollGrade, sizeof(pollGrade));
+	}
+
+};
 
 int mainAPIStudent()
 {
@@ -96,4 +168,6 @@ int mainAPIStudent()
 	for (int i = 0; i<n; i++){delete arr[i];}
 	delete[] arr;
 
+
+	return 0;
 }
