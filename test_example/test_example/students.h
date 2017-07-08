@@ -26,18 +26,18 @@ public:
 	virtual void save(ofstream& out)
 	{
 		auto szName = strlen(name);
-		out.write((char*)&szName, sizeof(szName));
+		out.write((char*)&szName, sizeof(int));
 		out.write(name, szName);
-		out.write((char*)&average, sizeof(average));
+		out.write((char*)&average, sizeof(double));
 	}
 
 	virtual void load(ifstream& in)
 	{
 		int szName;
-		in.read((char*)&szName, sizeof(szName));
+		in.read((char*)&szName, sizeof(int));
 		name = new char[szName + 1]();
 		in.read(name, szName);
-		in.read((char*)&average, sizeof(average));
+		in.read((char*)&average, sizeof(double));
 	}
 
 	virtual ~Student(){	delete[] name; };
@@ -58,24 +58,24 @@ class UndergradStudent : public Student {
 	double projectGrade;
 public:
 	UndergradStudent(){}
-	UndergradStudent(const char* name, double average, double projectGrade) 
+	UndergradStudent(const char* name, double average, double projectGrade)
 					: Student(name, average)
 	{
 		this->projectGrade = projectGrade;
-		type = 'U'; 
+		type = 'U';
 	}
 
 	virtual void save(ofstream& out)
 	{
 		Student::save(out);
-		out.write((char *)&projectGrade, sizeof(projectGrade));
+		out.write((char *)&projectGrade, sizeof(double));
 
 	}
 
 	virtual void load(ifstream& in)
 	{
 		Student::load(in);
-		in.read((char *)&projectGrade, sizeof(projectGrade));
+		in.read((char *)&projectGrade, sizeof(double));
 	}
 
 };
@@ -94,14 +94,14 @@ public:
 	virtual void save(ofstream& out)
 	{
 		Student::save(out);
-		out.write((char *)&tesPages, sizeof(tesPages));
+		out.write((char *)&tesPages, sizeof(int));
 
 	}
 
 	virtual void load(ifstream& in)
 	{
 		Student::load(in);
-		in.read((char *)&tesPages, sizeof(tesPages));
+		in.read((char *)&tesPages, sizeof(int));
 	}
 
 };
@@ -120,14 +120,14 @@ public:
 	virtual void save(ofstream& out)
 	{
 		Student::save(out);
-		out.write((char *)&pollGrade, sizeof(pollGrade));
+		out.write((char *)&pollGrade, sizeof(char));
 
 	}
 
 	virtual void load(ifstream& in)
 	{
 		Student::load(in);
-		in.read((char *)&pollGrade, sizeof(pollGrade));
+		in.read((char *)&pollGrade, sizeof(char));
 	}
 
 };
