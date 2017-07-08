@@ -26,7 +26,9 @@ public:
 struct AgeChecker {
 	int _limit;
 	AgeChecker(int limit) :_limit(limit){}
-	bool operator()(const Employee& a) const
+
+	template<class T>
+	bool operator()(T& a) const
 	{
 		return a.getAge() < _limit;
 	}
@@ -34,7 +36,8 @@ struct AgeChecker {
 
 
 struct AgeComparator {
-	bool operator()(const Employee& a, const Employee& b) const
+	template<class T>
+	bool operator()(const T& a, const T& b) const
 	{
 		return a.getAge() <  b.getAge();
 	}
@@ -42,7 +45,8 @@ struct AgeComparator {
 
 
 struct PrintName {
-	void operator()(const Employee& a) const
+	template<class T>
+	void operator()(const T& a) const
 	{
 		cout << a.getName() << endl;
 	}

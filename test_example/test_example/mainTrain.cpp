@@ -4,10 +4,10 @@
 #include <cmath> 
 #include <type_traits>
 
-class A: public Employee{
+class A{
 	int x;
 	public:
-	A(int x):Employee("a",x){this->x=x;}
+	A(int x){this->x=x;}
 	int getX(){return x;}
 	int getName(){ return x;}
 	int getAge(){ return x;}
